@@ -1,8 +1,8 @@
 package entities
 
 type TopUp struct {
-	id            int
-	user_id       int
-	topup_balance int
-	created_at    int
+	Id         int
+	User_id    int
+	Balance    int
+	Created_at int
 }
