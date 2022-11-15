@@ -21,7 +21,6 @@ func main() {
 	fmt.Println("Masukkan pilihan anda:")
 	var pilihan int
 	fmt.Scanln(&pilihan)
-
 	switch pilihan {
 	case 1:
 		{
@@ -131,11 +130,58 @@ func main() {
 		}
 	case 6:
 		{
+			// var id_pilihan int
+			// -----Topup Saldo-----
+			Topup := _entities.TopUp{}
+			fmt.Println("Masukkan Id yang ingin di TopUp")
+			fmt.Scanln(&Topup.Id)
+
+			fmt.Println("Masukkan Nominal TopUp")
+			fmt.Scanln(&Topup.Balance)
+
+			statement, errPrepare := dbConnection.Prepare(`INSERT INTO topup (id, balance) VALUES (?, ?)`)
+			if errPrepare != nil {
+				log.Fatal("error prepare topup", errPrepare.Error())
+			}
+
+			result, errExec := statement.Exec(Topup.Balance)
+			if errExec != nil {
+				log.Fatal("error exec topup", errExec.Error())
+			} else {
+				row, _ := result.RowsAffected()
+				if row > 0 {
+					fmt.Println("Topup berhasil")
+				} else {
+					fmt.Println("Topup gagal")
+				}
+			}
+			// -----Baca Saldo by Id------
+
+			// -----Update Saldo di Users-----
+
+			topupSaldo := _entities.Users{}
+			// topupSaldo =
+			statement, errPrepare := dbConnection.Prepare(`UPDATE users set saldo = ? where id = ?`)
+			if errPrepare != nil {
+				log.Fatal("error prepare update", errPrepare.Error())
+			}
+
+			result, errExec := statement.Exec(topupSaldo.Saldo, topupSaldo.Id)
+			if errExec != nil {
+				log.Fatal("error exec update", errExec.Error())
+			} else {
+				row, _ := result.RowsAffected()
+				if row > 0 {
+					fmt.Println("update berhasil")
+				} else {
+					fmt.Println("update gagal")
+				}
+			}
 
 		}
 	case 7:
 		{
-
+			fmt.Print("Transfer")
 		}
 
 	}
