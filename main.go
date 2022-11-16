@@ -86,7 +86,6 @@ func main() {
 			}
 			fmt.Printf("id: %d\ntelp: %s\nfirstname: %s\nlastname: %s\nsaldo: %d\ncreated_at: %s\n", dataUser.Id, dataUser.Telp, dataUser.Firstname, dataUser.Lastname, dataUser.Saldo, dataUser.Created_at.String())
 			//----------------
-
 		}
 	case 4:
 		{

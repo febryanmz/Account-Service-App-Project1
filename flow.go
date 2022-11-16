@@ -37,7 +37,7 @@ func main() {
 		}
 		//akhir syntax login1
 		var login int
-		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Profile\n4. TopUp\n5. Transfer\n")
+		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Akun\n4. TopUp\n5. Transfer\n")
 		fmt.Println("Masukkan Pilihan Anda:")
 		fmt.Scanln(&login)
 		switch login {
@@ -57,15 +57,21 @@ func main() {
 			}
 		case 2:
 			{
-				fmt.Println("Update Profil")
+				fmt.Println("Update Profile")
 				//syntax Update Data by ID
 				//Erlan
 			}
 		case 3:
 			{
-				fmt.Println("Delete Profil")
 				//syntax Delete Data by ID
 				//Bryan
+				err := _controllers.DeleteUserbyID(dbConnection, idAccount)
+				if err != nil {
+					os.Exit(1)
+				} else {
+					fmt.Println("Success")
+				}
+
 			}
 		case 4:
 			{
