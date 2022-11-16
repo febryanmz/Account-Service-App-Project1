@@ -21,7 +21,7 @@ func ConnectToDB() *sql.DB {
 	if errPing != nil {  //handling error ketika gagal konek ke db
 		log.Fatal("error connect to db ", errPing.Error())
 	} else {
-		fmt.Println("koneksi berhasil")
+		fmt.Println("Selamat Datang di Alterra Immersive Backend 13 :)")
 	}
 
 	return db
