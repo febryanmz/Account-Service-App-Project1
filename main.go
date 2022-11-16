@@ -24,6 +24,20 @@ func main() {
 	switch pilihan {
 	case 1:
 		{
+			userlogin := _entities.Users{}
+			fmt.Println("Masukan No Telp")
+			fmt.Scanln(&userlogin.Telp)
+			fmt.Println("Masukan Password")
+			fmt.Scanln(&userlogin.Pass)
+
+			results := dbConnection.QueryRow("SELECT id from users where telp = ? && pass = ?", &userlogin.Telp, &userlogin.Pass)
+			var dataUser _entities.Users
+			err := results.Scan(&dataUser.Id)
+
+			if err != nil {
+				log.Fatal("Login Anda Gagal ", err.Error())
+			}
+			fmt.Println("Selamat Login Anda Berhasil")
 
 		}
 	case 2:
