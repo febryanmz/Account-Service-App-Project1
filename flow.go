@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	_config "project1/config"
 	_controllers "project1/controllers"
@@ -12,8 +13,8 @@ func main() {
 
 	defer dbConnection.Close()
 
-	fmt.Printf("MENU:\n1. Login\n2. Register\n3. Exit\n")
-	fmt.Println("Selamat Datang di Alterra Immersive Backend 13 :)\nPilih Menu:")
+	fmt.Printf("---MENU---\n1. Login\n2. Register\n3. Exit\n")
+	fmt.Println("Pilih Menu:")
 	var menu int
 	fmt.Scanln(&menu)
 	if menu == 1 {
@@ -34,19 +35,25 @@ func main() {
 		} else {
 			fmt.Println("Selamat datang di ALterra Database\nSilahkan dipilih menunya ya kak :)")
 		}
-		fmt.Println(idAccount)
-		//akhir syntax login
-
+		//akhir syntax login1
 		var login int
-		fmt.Printf("MENU:\n1. Cek Profil\n2. Update Profil\n3. Delete Profil\n4. TopUp\n5. Transfer\n")
+		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Profile\n4. TopUp\n5. Transfer\n")
 		fmt.Println("Masukkan Pilihan Anda:")
 		fmt.Scanln(&login)
 		switch login {
 		case 1:
 			{
-				fmt.Println("Cek Profil")
 				//syntax READ DATA by ID
 				//Bryan
+				bacaALLData, err := _controllers.GetALLdatabyID(dbConnection, idAccount)
+				if err != nil {
+					log.Fatal("Error Baca Data")
+				}
+				for _, v := range bacaALLData {
+					fmt.Println("---Data Anda---")
+					fmt.Printf("No Telepon: %s\nFirstname: %s\nLastname: %s\nSaldo anda: %d\nDibuat pada: %s\n", v.Telp, v.Firstname, v.Lastname, v.Saldo, v.Created_at.String())
+				}
+				//----------------
 			}
 		case 2:
 			{
@@ -71,6 +78,10 @@ func main() {
 				fmt.Println("Transfer")
 				//syntax Transfer
 				//Erlan
+			}
+		default:
+			{
+				fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
 			}
 
 		}
