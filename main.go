@@ -37,46 +37,49 @@ func main() {
 			fmt.Scanln(&newUser.Firstname)
 			fmt.Println("Masukkan Nama Belakang anda")
 			fmt.Scanln(&newUser.Lastname)
+			newUser.Saldo = 0
 
-			statement, errPrepare := dbConnection.Prepare(`INSERT INTO users (telp, pass, firstname, lastname) VALUES (?, ?, ?, ?)`)
+			statement, errPrepare := dbConnection.Prepare(`INSERT INTO users (telp, pass, firstname, lastname, saldo) VALUES (?, ?, ?, ?, ?)`)
 			if errPrepare != nil {
-				log.Fatal("error prepare insert", errPrepare.Error())
+				log.Fatal("error prepare register", errPrepare.Error())
 			}
 
-			result, errExec := statement.Exec(newUser.Telp, newUser.Pass, newUser.Firstname, newUser.Lastname)
+			result, errExec := statement.Exec(newUser.Telp, newUser.Pass, newUser.Firstname, newUser.Lastname, newUser.Saldo)
 			if errExec != nil {
-				log.Fatal("error exec insert", errExec.Error())
+				log.Fatal("error exec register", errExec.Error())
 			} else {
 				row, _ := result.RowsAffected()
 				if row > 0 {
-					fmt.Println("Insert berhasil")
+					fmt.Println("Insert register")
 				} else {
-					fmt.Println("Insert gagal")
+					fmt.Println("Insert register")
 				}
 			}
 		}
 	case 3:
 		{
-			// fmt.Println("baca data by telp")
+			// fmt.Println("baca data by ID")
 			bacaUser := _entities.Users{}
-			fmt.Println("Masukkan Nomor Telepon User")
-			fmt.Scanln(&bacaUser.Telp)
+			fmt.Println("Masukkan ID User")
+			fmt.Scanln(&bacaUser.Id)
 
-			results := dbConnection.QueryRow("SELECT id, telp, firstname, lastname, saldo from users where telp = ?", &bacaUser.Telp)
+			results := dbConnection.QueryRow("SELECT telp, firstname, lastname, saldo, created_at from users where id = ?", &bacaUser.Id)
 			var dataUser _entities.Users
-			err := results.Scan(&dataUser.Id, &dataUser.Telp, &dataUser.Firstname, &dataUser.Lastname, &dataUser.Saldo)
+			err := results.Scan(&dataUser.Telp, &dataUser.Firstname, &dataUser.Lastname, &dataUser.Saldo, &bacaUser.Created_at)
 
 			if err != nil {
 				log.Fatal("error select ", err.Error())
 			}
-			fmt.Printf("id: %d, telp: %s, firstname: %s, lastname: %s, saldo: %#v\n", dataUser.Id, dataUser.Telp, dataUser.Firstname, dataUser.Lastname, dataUser.Saldo)
+			fmt.Printf("id: %d\n telp: %s\n firstname: %s\n lastname: %s\n saldo: %d\n created_at: %s\n", dataUser.Id, dataUser.Telp, dataUser.Firstname, dataUser.Lastname, dataUser.Saldo, dataUser.Created_at.String())
 			//----------------
 
 		}
 	case 4:
 		{
-			// update user
+			// (update user by ID)
 			updateUser := _entities.Users{}
+			fmt.Println("Masukkan ID user yang akan di update")
+			fmt.Scanln(&updateUser.Id)
 			fmt.Println("Masukkan No Telepon user yang akan di update")
 			fmt.Scanln(&updateUser.Telp)
 			fmt.Println("Masukkan Password user yang akan di update")
@@ -86,12 +89,12 @@ func main() {
 			fmt.Println("Masukkan Lastname user yang akan di update")
 			fmt.Scanln(&updateUser.Lastname)
 
-			statement, errPrepare := dbConnection.Prepare(`UPDATE users set pass = ?, firstname = ?, lastname = ? where telp = ?`)
+			statement, errPrepare := dbConnection.Prepare(`UPDATE users set telp = ?, pass = ?, firstname = ?, lastname = ? where Id = ?`)
 			if errPrepare != nil {
 				log.Fatal("error prepare update", errPrepare.Error())
 			}
 
-			result, errExec := statement.Exec(updateUser.Pass, updateUser.Firstname, updateUser.Lastname, updateUser.Telp)
+			result, errExec := statement.Exec(updateUser.Pass, updateUser.Firstname, updateUser.Lastname, updateUser.Telp, updateUser.Id)
 			if errExec != nil {
 				log.Fatal("error exec update", errExec.Error())
 			} else {
@@ -159,24 +162,23 @@ func main() {
 
 			// -----Update Saldo di Users-----
 
-			topupSaldo := _entities.Users{}
 			// topupSaldo =
-			statement, errPrepare := dbConnection.Prepare(`UPDATE users set saldo = ? where id = ?`)
-			if errPrepare != nil {
-				log.Fatal("error prepare update", errPrepare.Error())
-			}
+			// statement, errPrepare := dbConnection.Prepare(`UPDATE users set saldo = ? where id = ?`)
+			// if errPrepare != nil {
+			// 	log.Fatal("error prepare update", errPrepare.Error())
+			// }
 
-			result, errExec := statement.Exec(topupSaldo.Saldo, topupSaldo.Id)
-			if errExec != nil {
-				log.Fatal("error exec update", errExec.Error())
-			} else {
-				row, _ := result.RowsAffected()
-				if row > 0 {
-					fmt.Println("update berhasil")
-				} else {
-					fmt.Println("update gagal")
-				}
-			}
+			// result, errExec := statement.Exec(topupSaldo.Saldo, topupSaldo.Id)
+			// if errExec != nil {
+			// 	log.Fatal("error exec update", errExec.Error())
+			// } else {
+			// 	row, _ := result.RowsAffected()
+			// 	if row > 0 {
+			// 		fmt.Println("update berhasil")
+			// 	} else {
+			// 		fmt.Println("update gagal")
+			// 	}
+			// }
 
 		}
 	case 7:

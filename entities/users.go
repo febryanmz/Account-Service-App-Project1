@@ -1,5 +1,7 @@
 package entities
 
+import "time"
+
 type Users struct {
 	Id         int
 	Telp       string
@@ -7,6 +9,6 @@ type Users struct {
 	Firstname  string
 	Lastname   string
 	Saldo      int
-	Created_at int
-	Updated_at int
+	Created_at time.Time
+	Updated_at time.Time
 }
