@@ -65,12 +65,12 @@ func main() {
 
 			results := dbConnection.QueryRow("SELECT telp, firstname, lastname, saldo, created_at from users where id = ?", &bacaUser.Id)
 			var dataUser _entities.Users
-			err := results.Scan(&dataUser.Telp, &dataUser.Firstname, &dataUser.Lastname, &dataUser.Saldo, &bacaUser.Created_at)
+			err := results.Scan(&dataUser.Telp, &dataUser.Firstname, &dataUser.Lastname, &dataUser.Saldo, &dataUser.Created_at)
 
 			if err != nil {
 				log.Fatal("error select ", err.Error())
 			}
-			fmt.Printf("id: %d\n telp: %s\n firstname: %s\n lastname: %s\n saldo: %d\n created_at: %s\n", dataUser.Id, dataUser.Telp, dataUser.Firstname, dataUser.Lastname, dataUser.Saldo, dataUser.Created_at.String())
+			fmt.Printf("id: %d\ntelp: %s\nfirstname: %s\nlastname: %s\nsaldo: %d\ncreated_at: %s\n", dataUser.Id, dataUser.Telp, dataUser.Firstname, dataUser.Lastname, dataUser.Saldo, dataUser.Created_at.String())
 			//----------------
 
 		}
