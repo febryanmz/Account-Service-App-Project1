@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 	_entities "project1/entities"
 )
 
@@ -22,7 +24,6 @@ func GetALLdatabyID(db *sql.DB, idAccount int) ([]_entities.Users, error) {
 		dataUser = append(dataUser, userrow)
 	}
 	return dataUser, errSelect
-
 }
 
 func GetUserIDbyTelp(db *sql.DB, inTelp string, inPass string) (int, error) { // value disini
@@ -34,4 +35,24 @@ func GetUserIDbyTelp(db *sql.DB, inTelp string, inPass string) (int, error) { //
 		return 0, err //package errors (searching)
 	}
 	return idAccount, err
+}
+
+func DeleteUserbyID(db *sql.DB, idAccount int) error {
+	statement, errPrepare := db.Prepare(`DELETE from users where id = ?`)
+	if errPrepare != nil {
+		log.Fatal("Error prepare Delete", errPrepare.Error())
+	}
+
+	result, errExec := statement.Exec(&idAccount)
+	if errExec != nil {
+		log.Fatal("Error exec Delete", errExec.Error())
+	} else {
+		row, _ := result.RowsAffected()
+		if row > 0 {
+			fmt.Println("Delete Berhasil")
+		} else {
+			os.Exit(1)
+		}
+	}
+	return errExec
 }
