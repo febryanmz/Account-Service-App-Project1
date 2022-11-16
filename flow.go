@@ -29,7 +29,7 @@ func main() {
 		idAccount, err = _controllers.GetUserIDbyTelp(dbConnection, inTelp, inPass)
 		if err != nil {
 			fmt.Println("Login Gagal")
-			os.Exit(1) //menghentikan program LANGSUNG
+			os.Exit(1) //menghentikan program LANGSUNG (cara baru)
 			// log.Fatal("Error gagal login")
 		} else {
 			fmt.Println("Selamat datang di ALterra Database\nSilahkan dipilih menunya ya kak :)")
@@ -44,35 +44,41 @@ func main() {
 		switch login {
 		case 1:
 			{
-
 				fmt.Println("Cek Profil")
 				//syntax READ DATA by ID
+				//Bryan
 			}
 		case 2:
 			{
 				fmt.Println("Update Profil")
 				//syntax Update Data by ID
+				//Erlan
 			}
 		case 3:
 			{
 				fmt.Println("Delete Profil")
 				//syntax Delete Data by ID
+				//Bryan
 			}
 		case 4:
 			{
 				fmt.Println("Top Up")
 				//syntax TopUp
+				//Bryan
 			}
 		case 5:
 			{
 				fmt.Println("Transfer")
 				//syntax Transfer
+				//Erlan
 			}
 
 		}
 
 	} else if menu == 2 {
 		fmt.Println("Proceed to register")
+		//syntax Insert into
+		//Erlan
 	} else {
 		fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
 	}
