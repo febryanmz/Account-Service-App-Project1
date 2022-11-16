@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func ConnectToDB() *sql.DB {
 	// <username>:<password>@tcp(<hostname>:<portDB>)/<db_name>
-	var connectionString = "root:nephilim17@tcp(127.0.0.1:3306)/alterra_project1?parseTime=true"
+	var connectionString = os.Getenv("DB_Connection")
 	db, err := sql.Open("mysql", connectionString) // membuka koneksi ke daatabase
 	if err != nil {                                // pengecekan error yang terjadi ketika proses open connection
 		log.Fatal("error open connection", err.Error())
