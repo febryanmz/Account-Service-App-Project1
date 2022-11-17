@@ -78,9 +78,10 @@ func main() {
 				if errPrepare != nil {
 					os.Exit(1)
 					if errExec != nil {
+						fmt.Println("Update Gagal", err.Error())
 						os.Exit(1)
 					} else {
-						fmt.Println("Success")
+						fmt.Println("Update Success")
 					}
 				}
 			}
@@ -90,6 +91,7 @@ func main() {
 				//Bryan
 				err := _controllers.DeleteUserbyID(dbConnection, idAccount)
 				if err != nil {
+					fmt.Println("Delete Akun Gagal", err.Error())
 					os.Exit(1)
 				} else {
 					fmt.Println("Delete Akun Success")
