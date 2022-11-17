@@ -19,6 +19,7 @@ func main() {
 	fmt.Scanln(&menu)
 	if menu == 1 {
 		//isi syntax login
+		//Bryan
 		var inTelp string
 		var inPass string
 		fmt.Println("Masukan No Telp")
@@ -37,7 +38,7 @@ func main() {
 		}
 		//akhir syntax login1
 		var login int
-		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Akun\n4. TopUp\n5. Transfer\n")
+		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Akun\n4. TopUp\n5. TopUp History\n6. Transfer\n")
 		fmt.Println("Masukkan Pilihan Anda:")
 		fmt.Scanln(&login)
 		switch login {
@@ -57,6 +58,8 @@ func main() {
 			}
 		case 2:
 			{
+				//syntax Transfer
+				//Erlan
 				var upid string
 				var uptelp string
 				var uppass string
@@ -100,11 +103,11 @@ func main() {
 			}
 		case 4:
 			{
-				fmt.Println("Top Up")
+				fmt.Println("TopUp")
 				//syntax TopUp
 				//Bryan
 				var nominal int
-				fmt.Println("Masukkan Nominal Saldo yang di Top Up :")
+				fmt.Println("Masukkan Nominal Saldo yang di TopUp :")
 				fmt.Scanln(&nominal)
 				_, err := _controllers.InputNominalTopup(dbConnection, idAccount, nominal) //input nominal saldo ke tabel top_up
 				if err != nil {
@@ -115,6 +118,34 @@ func main() {
 				}
 			}
 		case 5:
+			{
+				//syntax READ TopUp History by ID
+				//Bryan
+				//------Coba INNER JOIN----Failed------
+				// DataUsers, DataTopUp, err := _controllers.GetTopupHistory(dbConnection, idAccount)
+				// if err != nil {
+				// 	fmt.Println("Error TopUp History", err.Error())
+				// 	os.Exit(1)
+				// }
+				//___________skip_____________
+				//-------Cara Conventional------
+				DataUsers, errUsers := _controllers.GetTopUpUsers(dbConnection, idAccount)
+				if errUsers != nil {
+					log.Fatal("Error Baca Users")
+				}
+				DataTopUp, errTopUp := _controllers.GetHistoryTopUp(dbConnection, idAccount)
+				if errTopUp != nil {
+					log.Fatal("Error Baca TopUp")
+				}
+				for _, u := range DataUsers {
+					fmt.Println("---TopUp History---")
+					fmt.Printf("No Telepon: %s\nFirstname: %s\nLastname: %s\n", u.Telp, u.Firstname, u.Lastname)
+				}
+				for _, t := range DataTopUp {
+					fmt.Printf("Saldo Topup: Rp.%d\nTopUp pada: %s\n", t.Balance, t.Created_at.String())
+				}
+			}
+		case 6:
 			{
 				fmt.Println("Transfer")
 				//syntax Transfer
