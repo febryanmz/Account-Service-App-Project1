@@ -57,9 +57,32 @@ func main() {
 			}
 		case 2:
 			{
-				fmt.Println("Update Profile")
-				//syntax Update Data by ID
-				//Erlan
+				var upid string
+				var uptelp string
+				var uppass string
+				var upfirst string
+				var uplast string
+
+				fmt.Println("Masukkan ID user yang akan di update")
+				fmt.Scanln(&upid)
+				fmt.Println("Masukkan No Telepon user yang akan di update")
+				fmt.Scanln(&uptelp)
+				fmt.Println("Masukkan Password user yang akan di update")
+				fmt.Scanln(&uppass)
+				fmt.Println("Masukkan Firstname user yang akan di update")
+				fmt.Scanln(&upfirst)
+				fmt.Println("Masukkan Lastname user yang akan di update")
+				fmt.Scanln(&uplast)
+
+				errPrepare, errExec := _controllers.UpdateUserbyID(dbConnection, uptelp, uppass, upfirst, uplast, upid)
+				if errPrepare != nil {
+					os.Exit(1)
+					if errExec != nil {
+						os.Exit(1)
+					} else {
+						fmt.Println("Success")
+					}
+				}
 			}
 		case 3:
 			{
@@ -103,11 +126,30 @@ func main() {
 		}
 
 	} else if menu == 2 {
-		fmt.Println("Proceed to register")
 		//syntax Insert into
 		//Erlan
-
-	} else {
-		fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
+		var regtelp string
+		var regpass string
+		var regfir string
+		var reqpas string
+		fmt.Println("Masukkan No Telepon anda")
+		fmt.Scanln(&regtelp)
+		fmt.Println("Masukkan Password anda")
+		fmt.Scanln(&regpass)
+		fmt.Println("Masukkan Nama Depan anda")
+		fmt.Scanln(&regfir)
+		fmt.Println("Masukkan Nama Belakang anda")
+		fmt.Scanln(&reqpas)
+		errPrepare, errExec := _controllers.RegisterUserbyID(dbConnection, regtelp, regpass, regfir, reqpas)
+		if errPrepare != nil {
+			os.Exit(1)
+			if errExec != nil {
+				os.Exit(1)
+			} else {
+				fmt.Println("Success")
+			}
+		} else {
+			fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
+		}
 	}
 }
