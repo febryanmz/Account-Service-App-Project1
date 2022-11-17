@@ -130,26 +130,26 @@ func main() {
 		//Erlan
 		var regtelp string
 		var regpass string
-		var regfir string
-		var reqpas string
+		var regfirst string
+		var reglast string
+		var regsaldo int = 0
 		fmt.Println("Masukkan No Telepon anda")
 		fmt.Scanln(&regtelp)
 		fmt.Println("Masukkan Password anda")
 		fmt.Scanln(&regpass)
 		fmt.Println("Masukkan Nama Depan anda")
-		fmt.Scanln(&regfir)
+		fmt.Scanln(&regfirst)
 		fmt.Println("Masukkan Nama Belakang anda")
-		fmt.Scanln(&reqpas)
-		errPrepare, errExec := _controllers.RegisterUserbyID(dbConnection, regtelp, regpass, regfir, reqpas)
-		if errPrepare != nil {
+		fmt.Scanln(&reglast)
+
+		_, err := _controllers.RegisterUserbyID(dbConnection, regtelp, regpass, regfirst, reglast, regsaldo)
+		if err != nil {
+			fmt.Println("Register Gagal", err.Error())
 			os.Exit(1)
-			if errExec != nil {
-				os.Exit(1)
-			} else {
-				fmt.Println("Success")
-			}
 		} else {
-			fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
+			fmt.Println("Register Berhasil")
 		}
+	} else {
+		fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
 	}
 }

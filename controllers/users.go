@@ -30,6 +30,7 @@ func GetUserIDbyTelp(db *sql.DB, inTelp string, inPass string) (int, error) { //
 	results := db.QueryRow("SELECT id from users where telp = ? && pass = ?", &inTelp, &inPass) // ngebaca data input telp & pass
 	var idAccount int
 	err := results.Scan(&idAccount)
+
 	if err != nil {
 		return 0, err //package errors (searching)
 	}
@@ -48,14 +49,13 @@ func DeleteUserbyID(db *sql.DB, idAccount int) error {
 	} else {
 		row, _ := result.RowsAffected()
 		if row > 0 {
-			fmt.Println("")
+			fmt.Println("Delete Berhasil")
 		} else {
 			os.Exit(1)
 		}
 	}
 	return errExec
 }
-
 func GetSaldo(db *sql.DB, idAccount int) (int, error) {
 	results := db.QueryRow("SELECT saldo FROM users WHERE id = ?", &idAccount) // ngebaca data input telp & pass
 	var saldo int
@@ -85,39 +85,33 @@ func AddBalance(db *sql.DB, idAccount int, nominal int) (int, error) {
 		return int(row), nil
 		//--------------
 		// if err != nil {
-		// 	return -1, err
+		//     return -1, err
 		// } else {
-		// 	return saldoTopUp, nil
+		//     return saldoTopUp, nil
 		// }
 		//---------------
 		// if row == 0 {
-		// 	os.Exit(1)
+		//     os.Exit(1)
 		// } else {
-		// 	return int(row), nil
+		//     return int(row), nil
 		// }
 	}
 	// return saldoTopUp, nil
 }
-func RegisterUserbyID(db *sql.DB, regtelp string, regpass string, regfir string, reqpas string) (error, error) {
-	statement, errPrepare := db.Prepare("INSERT INTO users (telp, pass, firstname, lastname) VALUES (?, ?, ?, ? )")
+func RegisterUserbyID(db *sql.DB, regtelp string, regpass string, regfirst string, reglast string, regsaldo int) (int, error) {
+	statement, errPrepare := db.Prepare("INSERT INTO users (telp, pass, firstname, lastname, saldo) VALUES (?, ?, ?, ?, ? )")
 	if errPrepare != nil {
-		return nil, errPrepare
+		return 0, errPrepare
 	}
-	result, errExec := statement.Exec(&regtelp, &regpass, &regfir, &reqpas)
+	result, errExec := statement.Exec(&regtelp, &regpass, &regfirst, &reglast, &regsaldo)
 	if errExec != nil {
-		log.Fatal("error exec register", errExec.Error())
+		return 0, errExec
 
 	} else {
 		row, _ := result.RowsAffected()
-		if row > 0 {
-			fmt.Println("Register Berhasil")
-
-		} else {
-			os.Exit(1)
-		}
-
+		return int(row), nil
 	}
-	return errPrepare, errExec
+
 }
 
 func UpdateUserbyID(db *sql.DB, uptelp string, uppass string, upfirst string, uplast string, upid string) (error, error) {
