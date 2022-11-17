@@ -69,7 +69,7 @@ func main() {
 				if err != nil {
 					os.Exit(1)
 				} else {
-					fmt.Println("Success")
+					fmt.Println("Delete Akun Success")
 				}
 
 			}
@@ -78,6 +78,16 @@ func main() {
 				fmt.Println("Top Up")
 				//syntax TopUp
 				//Bryan
+				var nominal int
+				fmt.Println("Masukkan Nominal Saldo yang di Top Up :")
+				fmt.Scanln(&nominal)
+				_, err := _controllers.InputNominalTopup(dbConnection, idAccount, nominal) //input nominal saldo ke tabel top_up
+				if err != nil {
+					fmt.Println("Top Up Gagal", err.Error())
+					os.Exit(1)
+				} else {
+					fmt.Println("Top Up Berhasil")
+				}
 			}
 		case 5:
 			{
@@ -96,6 +106,7 @@ func main() {
 		fmt.Println("Proceed to register")
 		//syntax Insert into
 		//Erlan
+
 	} else {
 		fmt.Println("Terima Kasih Sudah Berkunjung di Alterra Immersive Backend 13 :)")
 	}
