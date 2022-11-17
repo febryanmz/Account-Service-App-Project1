@@ -30,7 +30,6 @@ func GetUserIDbyTelp(db *sql.DB, inTelp string, inPass string) (int, error) { //
 	results := db.QueryRow("SELECT id from users where telp = ? && pass = ?", &inTelp, &inPass) // ngebaca data input telp & pass
 	var idAccount int
 	err := results.Scan(&idAccount)
-
 	if err != nil {
 		return 0, err //package errors (searching)
 	}
@@ -49,7 +48,7 @@ func DeleteUserbyID(db *sql.DB, idAccount int) error {
 	} else {
 		row, _ := result.RowsAffected()
 		if row > 0 {
-			fmt.Println("Delete Berhasil")
+			fmt.Println("")
 		} else {
 			os.Exit(1)
 		}
@@ -57,6 +56,48 @@ func DeleteUserbyID(db *sql.DB, idAccount int) error {
 	return errExec
 }
 
+func GetSaldo(db *sql.DB, idAccount int) (int, error) {
+	results := db.QueryRow("SELECT saldo FROM users WHERE id = ?", &idAccount) // ngebaca data input telp & pass
+	var saldo int
+	err := results.Scan(&saldo)
+	if err != nil {
+		return 0, err //package errors (searching)
+	}
+	return saldo, err
+}
+
+func AddBalance(db *sql.DB, idAccount int, nominal int) (int, error) {
+	var query = "update users set saldo = (?) where id = (?)"
+	statement, errPrepare := db.Prepare(query)
+	if errPrepare != nil {
+		return 0, errPrepare
+	}
+	saldo, errSaldo := GetSaldo(db, idAccount)
+	if errSaldo != nil {
+		return 0, errSaldo
+	}
+	var saldoTopUp = nominal + saldo
+	result, err := statement.Exec(&saldoTopUp, &idAccount)
+	if err != nil {
+		return 0, err
+	} else {
+		row, _ := result.RowsAffected()
+		return int(row), nil
+		//--------------
+		// if err != nil {
+		// 	return -1, err
+		// } else {
+		// 	return saldoTopUp, nil
+		// }
+		//---------------
+		// if row == 0 {
+		// 	os.Exit(1)
+		// } else {
+		// 	return int(row), nil
+		// }
+	}
+	// return saldoTopUp, nil
+}
 func RegisterUserbyID(db *sql.DB, regtelp string, regpass string, regfir string, reqpas string) (error, error) {
 	statement, errPrepare := db.Prepare("INSERT INTO users (telp, pass, firstname, lastname) VALUES (?, ?, ?, ? )")
 	if errPrepare != nil {
