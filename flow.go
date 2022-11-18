@@ -38,7 +38,7 @@ func main() {
 		}
 		//akhir syntax login1
 		var login int
-		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Akun\n4. TopUp\n5. TopUp History\n6. Transfer\n")
+		fmt.Printf("----MENU----\n1. Check Profile\n2. Update Profile\n3. Delete Akun\n4. Cek Profil Orang Lain\n5. TopUp\n6. TopUp History\n7. Transfer\n")
 		fmt.Println("Masukkan Pilihan Anda:")
 		fmt.Scanln(&login)
 		switch login {
@@ -103,6 +103,21 @@ func main() {
 			}
 		case 4:
 			{
+				//syntax Cek Profil orang lain
+				var cekTelp string
+				fmt.Println("Masukkan No Telepon user yang akan di cek")
+				fmt.Scanln(&cekTelp)
+				bacaALLData, err := _controllers.GetALLdatabyTelp(dbConnection, cekTelp)
+				if err != nil {
+					log.Fatal("Error Baca Data")
+				}
+				for _, v := range bacaALLData {
+					fmt.Println("---Hasil Cek Data---")
+					fmt.Printf("Firstname: %s\nLastname: %s\n", v.Firstname, v.Lastname)
+				}
+			}
+		case 5:
+			{
 				fmt.Println("TopUp")
 				//syntax TopUp
 				//Bryan
@@ -117,7 +132,7 @@ func main() {
 					fmt.Println("Top Up Berhasil")
 				}
 			}
-		case 5:
+		case 6:
 			{
 				//syntax READ TopUp History by ID
 				//Bryan
@@ -145,7 +160,7 @@ func main() {
 					fmt.Printf("Saldo Topup: Rp.%d\nTopUp pada: %s\n", t.Balance, t.Created_at.String())
 				}
 			}
-		case 6:
+		case 7:
 			{
 				fmt.Println("Transfer")
 				//syntax Transfer

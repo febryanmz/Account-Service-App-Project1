@@ -154,3 +154,21 @@ func GetTopUpUsers(db *sql.DB, idAccount int) ([]_entities.Users, error) {
 	}
 	return dataUser, errSelect
 }
+
+func GetALLdatabyTelp(db *sql.DB, cekTelp string) ([]_entities.Users, error) {
+	result, errSelect := db.Query("SELECT firstname, lastname from users where telp = ?", &cekTelp) // proses menjalankana query SQL
+	if errSelect != nil {                                                                           //handling error saat proses menjalankan query
+		log.Fatal("error select ", errSelect.Error())
+	}
+	var dataUser []_entities.Users
+	for result.Next() { // membaca tiap baris/row dari hasil query
+		var userrow _entities.Users                                   // penampung tiap baris data dari db                                                                                                     // membuat variabel penampung
+		errScan := result.Scan(&userrow.Firstname, &userrow.Lastname) //melakukan scanning data dari masing" row dan menyimpannya kedalam variabel yang dibuat sebelumnya
+		if errScan != nil {                                           // handling ketika ada error pada saat proses scannign
+			log.Fatal("error scan ", errScan.Error())
+		}
+		// fmt.Printf("id: %s, nama: %s, email: %s\n", userrow.Id, userrow.Nama, userrow.Email) // menampilkan data hasil pembacaan dari db
+		dataUser = append(dataUser, userrow)
+	}
+	return dataUser, errSelect
+}
